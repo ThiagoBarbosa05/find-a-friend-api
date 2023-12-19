@@ -11,8 +11,8 @@ datasource db {
 }
 
 enum Role {
-  ADMIN
-  MEMBER
+  ORG
+  USER
 }
 
 enum Age {
@@ -46,28 +46,28 @@ enum Environment {
   REDUCED
 }
 
-model Organization {
+model User {
   id              String   @id @default(uuid())
   name            String
   email           String   @unique
   password_hash   String
-  role            Role     @default(ADMIN)
+  role            Role     @default(ORG)
   created_at      DateTime @default(now())
-  whatsapp_number BigInt
+  whatsapp_number String
   Address         Address?
   Pet             Pet[]
 
-  @@map("organizations")
+  @@map("users")
 }
 
 model Address {
-  id              String       @id @default(uuid())
-  street          String
-  city            String
-  state           String
-  postal_code     String
-  organization_id String       @unique
-  organization    Organization @relation(fields: [organization_id], references: [id])
+  id          String @id @default(uuid())
+  street      String
+  city        String
+  state       String
+  postal_code String
+  user_id     String @unique
+  user        User   @relation(fields: [user_id], references: [id])
 
   @@map("adresses")
 }
@@ -81,9 +81,9 @@ model Pet {
   energy             Energy
   independence_level Independence
   environment        Environment
-  requirement        String
-  organization       Organization @relation(fields: [organization_id], references: [id])
-  organization_id    String
+  requirements       String
+  user               User         @relation(fields: [user_id], references: [id])
+  user_id            String
 
   @@map("pets")
 }
