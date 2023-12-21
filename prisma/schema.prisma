@@ -75,15 +75,16 @@ model Address {
 model Pet {
   id                 String       @id @default(uuid())
   name               String
-  about              String
+  about              String?
   age_range          Age
   size               Size
   energy             Energy
   independence_level Independence
   environment        Environment
-  requirements       String
+  requirements       String?
   user               User         @relation(fields: [user_id], references: [id])
   user_id            String
+  created_at         DateTime     @default(now())
 
   @@map("pets")
 }

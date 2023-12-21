@@ -1,4 +1,4 @@
-import { User } from '@/@types/users'
+import { User } from '@/@types'
 import { UsersRepository } from '../contracts/users-repository'
 import { randomUUID } from 'node:crypto'
 

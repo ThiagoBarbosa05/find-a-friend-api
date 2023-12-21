@@ -1,4 +1,4 @@
-import { User } from '@/@types/users'
+import { User } from '@/@types'
 
 export interface UsersRepository {
   create(data: User): Promise<User>

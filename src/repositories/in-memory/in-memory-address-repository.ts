@@ -1,4 +1,4 @@
-import { Address } from '@/@types/users'
+import { Address } from '@/@types'
 import { AddressRepository } from '../contracts/address-repository'
 import { randomUUID } from 'crypto'
 

@@ -1,4 +1,4 @@
-import { Address, User } from '@/@types/users'
+import { Address, User } from '@/@types'
 import { UsersRepository } from '@/repositories/contracts/users-repository'
 import { formatWhatsappNumber } from '@/utils/formatWhatsappNumber'
 import { hash } from 'bcryptjs'
@@ -46,14 +46,6 @@ export class RegisterUseCase {
       throw new UserAlreadyExistsError()
     }
 
-    const userCreated = await this.usersRepository.create({
-      email: user.email,
-      name: user.name,
-      password_hash,
-      role: 'ORG',
-      whatsapp_number: formatWhatsappNumber(user.whatsapp_number),
-    })
-
     const addressCreated = await this.addressRepository.create({
       city: address.city,
       postal_code: address.postal_code,
@@ -62,7 +54,14 @@ export class RegisterUseCase {
       user_id: address.user_id,
     })
 
-    console.log({ userCreated, addressCreated })
+    const userCreated = await this.usersRepository.create({
+      email: user.email,
+      name: user.name,
+      password_hash,
+      role: 'ORG',
+      whatsapp_number: formatWhatsappNumber(user.whatsapp_number),
+      address_id: addressCreated.id,
+    })
 
     return { userCreated, addressCreated }
   }
