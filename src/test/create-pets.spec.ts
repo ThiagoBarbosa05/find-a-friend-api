@@ -21,8 +21,10 @@ describe('Register use case', () => {
       size: 'MEDIUM',
       user_id: 'org-1',
       about: 'A Pet incredible',
-      requirements: 'a lovely owner',
+      requirements: ['a lovely owner', 'dsdafwf', 'naskehfbaesjkhb '],
     })
+
+    console.log(pet)
 
     expect(pet.id).toEqual(expect.any(String))
   })

@@ -1,8 +1,63 @@
 import { FilterPets, Pet } from '@/@types'
 import { PetsRepository } from '../contracts/pets-repository'
 import { randomUUID } from 'node:crypto'
-import { InMemoryUsersRepository } from './in-memory-users-repository'
-import { InMemoryAddressRepository } from './in-memory-address-repository'
+
+const addresses = [
+  {
+    id: 'ad-1',
+    city: 'Rio De Janeiro',
+    postal_code: '28977-098',
+    state: 'Rio De Janeiro',
+    street: 'Rua 1',
+    user_id: 'org-1',
+  },
+  {
+    id: 'ad-2',
+    city: 'Rio De Janeiro',
+    postal_code: '28977-098',
+    state: 'Rio De Janeiro',
+    street: 'Rua 2',
+    user_id: 'org-2',
+  },
+  {
+    id: 'ad-3',
+    city: 'Minas Gerais',
+    postal_code: '28977-098',
+    state: 'Minas Gerais',
+    street: 'Rua 3',
+    user_id: 'org-3',
+  },
+]
+
+const orgs = [
+  {
+    id: 'org-1',
+    email: 'org1@email.com',
+    name: 'org 1',
+    password_hash: '123456',
+    whatsapp_number: '(22)99887-9987',
+    role: 'ORG',
+    address_id: 'ad-1',
+  },
+  {
+    id: 'org-2',
+    email: 'org2@email.com',
+    name: 'org 2',
+    password_hash: '123456',
+    whatsapp_number: '(22)99887-9987',
+    role: 'ORG',
+    address_id: 'ad-2',
+  },
+  {
+    id: 'org-3',
+    email: 'org3@email.com',
+    name: 'org 3',
+    password_hash: '123456',
+    whatsapp_number: '(22)99887-9987',
+    role: 'ORG',
+    address_id: 'ad-3',
+  },
+]
 
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
@@ -49,18 +104,13 @@ export class InMemoryPetsRepository implements PetsRepository {
   }
 
   async getPetsByCity(city: string) {
-    const addressRepository = new InMemoryAddressRepository()
-    const usersRepository = new InMemoryUsersRepository()
-
     const petsInCity = this.items.filter((pet) => {
-      const org = usersRepository.items.find((user) => user.id === pet.user_id)
-      const address = addressRepository.items.find(
+      const org = orgs.find((user) => user.id === pet.user_id)
+      const address = addresses.find(
         (address) => address.id === org?.address_id,
       )
-
       return address?.city === city
     })
-
     return petsInCity
   }
 }

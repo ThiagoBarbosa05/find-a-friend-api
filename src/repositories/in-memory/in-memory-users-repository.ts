@@ -22,6 +22,7 @@ export class InMemoryUsersRepository implements UsersRepository {
       role: data.role,
       whatsapp_number: data.whatsapp_number,
       created_at: new Date(),
+      address_id: data.address_id,
     }
 
     this.items.push(user)

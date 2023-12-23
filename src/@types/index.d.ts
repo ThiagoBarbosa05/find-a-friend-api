@@ -52,7 +52,7 @@ export type Pet = {
   energy: 'LOW' | 'MEDIUM' | 'HIGH'
   independence_level: 'LOW' | 'MEDIUM' | 'HIGH'
   environment: 'BROAD' | 'CLOSED' | 'REDUCED'
-  requirements?: string
+  requirements?: string[]
   user_id: string
   created_at?: Date
 }

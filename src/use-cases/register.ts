@@ -17,7 +17,7 @@ interface RegisterUseCaseRequest {
     postal_code: string
     state: string
     street: string
-    user_id: string
+    user_id?: string
   }
 }
 
@@ -46,21 +46,20 @@ export class RegisterUseCase {
       throw new UserAlreadyExistsError()
     }
 
-    const addressCreated = await this.addressRepository.create({
-      city: address.city,
-      postal_code: address.postal_code,
-      state: address.state,
-      street: address.street,
-      user_id: address.user_id,
-    })
-
     const userCreated = await this.usersRepository.create({
       email: user.email,
       name: user.name,
       password_hash,
       role: 'ORG',
       whatsapp_number: formatWhatsappNumber(user.whatsapp_number),
-      address_id: addressCreated.id,
+    })
+
+    const addressCreated = await this.addressRepository.create({
+      city: address.city,
+      postal_code: address.postal_code,
+      state: address.state,
+      street: address.street,
+      user_id: userCreated.id ?? '',
     })
 
     return { userCreated, addressCreated }

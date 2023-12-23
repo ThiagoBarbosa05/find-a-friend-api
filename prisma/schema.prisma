@@ -67,7 +67,7 @@ model Address {
   state       String
   postal_code String
   user_id     String @unique
-  user        User   @relation(fields: [user_id], references: [id])
+  user        User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("adresses")
 }
@@ -81,8 +81,8 @@ model Pet {
   energy             Energy
   independence_level Independence
   environment        Environment
-  requirements       String?
-  user               User         @relation(fields: [user_id], references: [id])
+  requirements       String[]
+  user               User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id            String
   created_at         DateTime     @default(now())
 

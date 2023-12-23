@@ -1,22 +1,12 @@
-import fastify, { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
+import { fastifyJwt } from '@fastify/jwt'
+import fastify from 'fastify'
+import { env } from './env'
+import { usersRoutes } from './http/controllers/users-controllers/routes'
 
 export const app = fastify()
 
-app.post(
-  '/organizations',
-  async (request: FastifyRequest, reply: FastifyReply) => {
-    // const organizationBodySchema = z.object({
-    //   name: z.string(),
-    //   email: z.string().email(),
-    //   password: z.string(),
-    //   role: z.enum(['ADMIN', 'MEMBER']),
-    //   whatsapp_number: z.number(),
-    // })
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+})
 
-    // const {} = organizationBodySchema.parse(request.body)
-
-    console.log(request.body)
-    reply.send()
-  },
-)
+app.register(usersRoutes)

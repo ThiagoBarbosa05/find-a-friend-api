@@ -95,6 +95,7 @@ describe('Register use case', () => {
 
   it('should be able to create an address when registering a new organization', async () => {
     const user = {
+      id: 'user-1',
       email: 'user@example.com',
       name: 'user-1',
       password: '1234567',
