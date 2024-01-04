@@ -1,7 +1,7 @@
 import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists'
 import { makeRegisterUseCase } from '@/use-cases/factories/make-register-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
+import { ZodError, z } from 'zod'
 
 export async function register(req: FastifyRequest, reply: FastifyReply) {
   try {
@@ -64,9 +64,22 @@ export async function register(req: FastifyRequest, reply: FastifyReply) {
       { sign: { sub: userCreated.id } },
     )
 
-    reply.send({ token })
+    const refreshToken = await reply.jwtSign(
+      { role: userCreated.role },
+      { sign: { sub: userCreated.id, expiresIn: '7d' } },
+    )
+
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(201)
+      .send({ token })
   } catch (err) {
-    if (err instanceof UserAlreadyExistsError) {
+    if (err instanceof UserAlreadyExistsError || err instanceof ZodError) {
       reply.status(400).send({ message: err.message })
     }
   }

@@ -46,7 +46,7 @@ export type Address = {
 export type Pet = {
   id?: string
   name: string
-  about?: string
+  about?: string | null
   age_range: 'CUB' | 'YOUNG' | 'ADULT'
   size: 'SMALL' | 'MEDIUM' | 'LARGE' | 'GIANT'
   energy: 'LOW' | 'MEDIUM' | 'HIGH'
