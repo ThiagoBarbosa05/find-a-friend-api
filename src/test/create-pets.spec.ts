@@ -24,8 +24,6 @@ describe('Register use case', () => {
       requirements: ['a lovely owner', 'dsdafwf', 'naskehfbaesjkhb '],
     })
 
-    console.log(pet)
-
     expect(pet.id).toEqual(expect.any(String))
   })
 })

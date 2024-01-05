@@ -1,4 +1,4 @@
-import { FilterPets, Pet } from '@/@types'
+import { Pet } from '@/@types'
 import { PetsRepository } from '../contracts/pets-repository'
 import { randomUUID } from 'node:crypto'
 
@@ -89,21 +89,7 @@ export class InMemoryPetsRepository implements PetsRepository {
     return pet
   }
 
-  async filterPets(query: FilterPets) {
-    const pet = this.items.filter(
-      (item) =>
-        item.age_range === query.age_range ||
-        item.energy === query.energy ||
-        item.size === query.size ||
-        item.independence_level === query.independence_level,
-    )
-
-    if (!pet) return null
-
-    return pet
-  }
-
-  async getPetsByCity(city: string) {
+  async findPets(city: string) {
     const petsInCity = this.items.filter((pet) => {
       const org = orgs.find((user) => user.id === pet.user_id)
       const address = addresses.find(

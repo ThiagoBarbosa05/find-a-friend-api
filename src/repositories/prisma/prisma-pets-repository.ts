@@ -1,4 +1,4 @@
-import { Pet, FilterPets } from '@/@types'
+import { Pet } from '@/@types'
 import { PetsRepository } from '../contracts/pets-repository'
 import { prisma } from '@/lib/prisma'
 
@@ -23,10 +23,7 @@ export class PrismaPetsRepository implements PetsRepository {
     return pet
   }
 
-  // filterPets(query: FilterPets): Promise<Pet[] | null> {
-  //   throw new Error('Method not implemented.')
-  // }
-  async getPetsByCity(city: string): Promise<Pet[] | null> {
+  async findPets(city: string): Promise<Pet[] | null> {
     const foundPets = await prisma.user.findMany({
       where: {
         Address: {

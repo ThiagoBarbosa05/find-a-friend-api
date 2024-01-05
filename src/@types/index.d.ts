@@ -57,9 +57,15 @@ export type Pet = {
   created_at?: Date
 }
 
-export interface FilterPets {
-  age_range?: 'CUB' | 'YOUNG' | 'ADULT'
-  energy?: 'LOW' | 'MEDIUM' | 'HIGH'
-  size?: 'SMALL' | 'MEDIUM' | 'LARGE' | 'GIANT'
-  independence_level?: 'LOW' | 'MEDIUM' | 'HIGH'
+export type GeoLocation = {
+  cep: string
+  state: string
+  city: string
+  street: string
+  location: {
+    coordinates?: {
+      longitude?: string
+      latitude?: string
+    }
+  }
 }

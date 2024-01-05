@@ -43,8 +43,10 @@ export async function authenticate(req: FastifyRequest, reply: FastifyReply) {
       .status(200)
       .send({ token })
   } catch (err) {
-    if (err instanceof InvalidCredentialsError || err instanceof ZodError) {
+    if (err instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: err.message })
+    } else if (err instanceof ZodError) {
+      return reply.status(400).send({ message: err.flatten().fieldErrors })
     }
   }
 

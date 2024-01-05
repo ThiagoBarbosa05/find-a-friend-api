@@ -1,7 +1,7 @@
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 import { makeGetPetByIdUseCase } from '@/use-cases/factories/make-get-pet-by-id-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
+import { ZodError, z } from 'zod'
 
 export async function getPetById(req: FastifyRequest, reply: FastifyReply) {
   try {
@@ -19,6 +19,8 @@ export async function getPetById(req: FastifyRequest, reply: FastifyReply) {
   } catch (err) {
     if (err instanceof ResourceNotFoundError) {
       return reply.status(404).send({ message: err.message })
+    } else if (err instanceof ZodError) {
+      return reply.status(400).send({ message: err.flatten().fieldErrors })
     }
   }
 }

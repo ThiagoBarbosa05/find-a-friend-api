@@ -3,7 +3,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { prisma } from '@/lib/prisma'
 
-describe('Get pet by id (E2E)', () => {
+describe('Find Pets (E2E)', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -12,7 +12,7 @@ describe('Get pet by id (E2E)', () => {
     await app.close()
   })
 
-  it('should to get a pet by id', async () => {
+  it('should be able to retrieve pets', async () => {
     const user = await prisma.user.create({
       data: {
         email: 'user-1@email.com',
@@ -22,7 +22,17 @@ describe('Get pet by id (E2E)', () => {
       },
     })
 
-    const createdPet = await prisma.pet.create({
+    await prisma.address.create({
+      data: {
+        city: 'Rio de Janeiro',
+        postal_code: '28934459',
+        state: 'Rio de Janeiro',
+        street: 'rua x',
+        user_id: user.id,
+      },
+    })
+
+    await prisma.pet.create({
       data: {
         name: 'pet-1',
         about: 'pet very cute',
@@ -37,9 +47,12 @@ describe('Get pet by id (E2E)', () => {
     })
 
     const response = await request(app.server)
-      .get(`/pets/${createdPet.id}`)
+      .get(`/pets`)
+      .query({ city: 'Rio de Janeiro', size: 'SMALL' })
       .expect(200)
 
-    expect(response.body.pet.id).toEqual(expect.any(String))
+    expect(response.body.pets).toEqual([
+      expect.objectContaining({ size: 'SMALL' }),
+    ])
   })
 })

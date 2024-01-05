@@ -1,3 +1,4 @@
+import { getGeolocation } from '@/lib/get-location'
 import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists'
 import { makeRegisterUseCase } from '@/use-cases/factories/make-register-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -22,10 +23,13 @@ export async function register(req: FastifyRequest, reply: FastifyReply) {
             message: 'whatsapp number is invalid.',
           },
         ),
-      street: z.string().min(1, { message: 'Please enter a street address' }),
-      city: z.string().min(1, { message: 'Please enter a city' }),
-      state: z.string().min(1, { message: 'Please enter a state' }),
-      postal_code: z.string().refine((value) => /^\d{8}$/.test(value), {
+      street: z
+        .string()
+        .min(1, { message: 'Please enter a street address' })
+        .optional(),
+      city: z.string().min(1, { message: 'Please enter a city' }).optional(),
+      state: z.string().min(1, { message: 'Please enter a state' }).optional(),
+      postal_code: z.string().refine((value) => /^[0-9]{8}$/.test(value), {
         message: 'Invalid postal code. It must have 8 digits.',
       }),
     })
@@ -48,11 +52,13 @@ export async function register(req: FastifyRequest, reply: FastifyReply) {
       whatsapp_number,
     }
 
+    const locationResponse = await getGeolocation(postal_code)
+
     const address = {
-      state,
-      city,
+      state: locationResponse.state ?? state,
+      city: locationResponse.city ?? city,
       postal_code,
-      street,
+      street: locationResponse.street ?? street,
     }
 
     const registerUseCase = makeRegisterUseCase()
@@ -79,8 +85,10 @@ export async function register(req: FastifyRequest, reply: FastifyReply) {
       .status(201)
       .send({ token })
   } catch (err) {
-    if (err instanceof UserAlreadyExistsError || err instanceof ZodError) {
-      reply.status(400).send({ message: err.message })
+    if (err instanceof UserAlreadyExistsError) {
+      return reply.status(400).send({ message: err.message })
+    } else if (err instanceof ZodError) {
+      return reply.status(400).send({ message: err.flatten().fieldErrors })
     }
   }
 }

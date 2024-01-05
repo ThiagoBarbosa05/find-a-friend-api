@@ -1,22 +1,37 @@
-import { prisma } from '@/lib/prisma'
-import { makeGetPetsByCityUseCase } from '@/use-cases/factories/make-get-pets-by-city-use-case'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
+import { makeFindPetsUseCase } from '@/use-cases/factories/make-find-pets-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
+import { ZodError, z } from 'zod'
 
 export async function findPets(req: FastifyRequest, reply: FastifyReply) {
   try {
     const querySchema = z.object({
       city: z.string(),
+      ageRange: z.enum(['CUB', 'YOUNG', 'ADULT']).optional(),
+      energy: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
+      independenceLevel: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
+      size: z.enum(['SMALL', 'MEDIUM', 'LARGE', 'GIANT']).optional(),
     })
 
-    const { city } = querySchema.parse(req.query)
+    const { city, ageRange, energy, independenceLevel, size } =
+      querySchema.parse(req.query)
 
-    const getPetsByCityUseCase = makeGetPetsByCityUseCase()
+    const getPetsByCityUseCase = makeFindPetsUseCase()
 
-    const { petsByCity } = await getPetsByCityUseCase.execute(city)
+    const { pets } = await getPetsByCityUseCase.execute({
+      city,
+      ageRange,
+      energy,
+      independenceLevel,
+      size,
+    })
 
-    return reply.send({ petsByCity })
+    return reply.send({ pets })
   } catch (err) {
-    console.log(err)
+    if (err instanceof ResourceNotFoundError) {
+      return reply.status(400).send({ message: err.message })
+    } else if (err instanceof ZodError) {
+      return reply.status(400).send({ message: err.flatten().fieldErrors })
+    }
   }
 }
