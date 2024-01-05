@@ -10,6 +10,7 @@ Esta é uma simples aplicação desenvolvida como solução do desafio do módul
 
 The following tools were used to build the project:
 
+<div>
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 
 ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
@@ -21,6 +22,9 @@ The following tools were used to build the project:
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) 
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+</div>
+
+
 ## Regras da aplicação
 
 - Deve ser possível cadastrar um pet
