@@ -47,8 +47,8 @@ describe('Find Pets (E2E)', () => {
     })
 
     const response = await request(app.server)
-      .get(`/pets`)
-      .query({ city: 'Rio de Janeiro', size: 'SMALL' })
+      .get(`/pets/find/Rio de Janeiro`)
+      .query({ size: 'SMALL' })
       .expect(200)
 
     expect(response.body.pets).toEqual([

@@ -6,15 +6,21 @@ import { ZodError, z } from 'zod'
 export async function findPets(req: FastifyRequest, reply: FastifyReply) {
   try {
     const querySchema = z.object({
-      city: z.string(),
       ageRange: z.enum(['CUB', 'YOUNG', 'ADULT']).optional(),
       energy: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
       independenceLevel: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
       size: z.enum(['SMALL', 'MEDIUM', 'LARGE', 'GIANT']).optional(),
     })
 
-    const { city, ageRange, energy, independenceLevel, size } =
-      querySchema.parse(req.query)
+    const paramsSchema = z.object({
+      city: z.string(),
+    })
+
+    const { city } = paramsSchema.parse(req.params)
+
+    const { ageRange, energy, independenceLevel, size } = querySchema.parse(
+      req.query,
+    )
 
     const getPetsByCityUseCase = makeFindPetsUseCase()
 
