@@ -10,7 +10,7 @@ Esta é uma simples aplicação desenvolvida como solução do desafio do módul
 
 The following tools were used to build the project:
 
-<div>
+<div style="display: flex">
   
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 
