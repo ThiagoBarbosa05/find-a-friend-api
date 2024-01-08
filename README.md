@@ -326,4 +326,8 @@ Para rodar os testes, siga os seguintes passos:
         }
     ```
 
+    ## Autores
+
+- [@ThiagoBarbosa05](https://github.com/ThiagoBarbosa05)
+
 
