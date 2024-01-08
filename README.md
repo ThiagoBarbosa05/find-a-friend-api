@@ -86,3 +86,244 @@ Para rodar os testes, siga os seguintes passos:
   # Para rodar os testes end-to-end
   npm run test:e2e
 ```
+
+
+## Documentação da API
+
+#### Registra um usuário como uma ORG
+
+```http
+  POST /register
+```
++ Request (application/json)
+
+    + Body
+
+      ```json
+        {
+          "name": "Jonh Doe",
+          "email": "Johndoe@email.com",
+          "password": "javascript",
+          "whatsapp_number": "22999999999",
+          "postal_code": "20910025"
+          
+          # Not Required
+          "street": "Avenida do Exército",
+          "city": "Rio de Janeiro",
+          "state": "RJ",
+        }
+      ```
++ Response 201
+  
+    + Body
+
+      ```json
+          {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw"
+          }
+      ```
+    
+    + Header 
+      ```
+          Set-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDUzNTYzNTJ9.lkFRkXmxMh92ubjBwGAQGyNRMG2QHpci0ay3jCuDP7M; 
+          Path=/; 
+          Secure; 
+          HttpOnly;
+      ```
+
+#### Autentica o usuário
+
+```http
+  POST /login
+```
+
++ Request (application/json)
+
+    + Body
+
+      ```json
+        {
+          "email": "Johndoe@email.com",
+          "password": "javascript",
+        }
+      ```
++ Response 200
+  
+    + Body
+
+      ```json
+          {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw"
+          }
+      ```
+    
+    + Header 
+      ```
+          Set-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDUzNTYzNTJ9.lkFRkXmxMh92ubjBwGAQGyNRMG2QHpci0ay3jCuDP7M; 
+          Path=/; 
+          Secure; 
+          HttpOnly;
+      ```
+
+#### Refresh token do usuário
+
+```http
+  PATCH /token/refresh
+```
+
++ Response 200
+
+  ```json
+    {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNDAwOTY3NTMtNWRkNy00ZGM4LWJmNmEtNjdhMTI1NTRhODIwIiwiaWF0IjoxNzA0NzUyNjc3LCJleHAiOjE3MDQ3NTMyNzd9.0bY3L41z1fhihoOfBCTIXPd-3e-hwhTdRqMI17VlTmw"
+    }
+  ```
+
+#### Registrar um pet
+
+```http
+  POST /pets
+```
+
++ Request (application/json)
+
+    + Body 
+
+
+        ```json
+          {
+            "ageRange": "CUB",
+            "name": "pet-3",
+            "size": "SMALL",
+            "energy": "MEDIUM",
+            "independenceLevel": "MEDIUM",
+            "environment": "BROAD",
+
+            # Not required
+            "about": "pet very cute",
+            "requirements": [
+                "care",
+                "food",
+                "water"
+            ]
+          }
+        ```
+
+    + Header
+
+        ```
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
+#### Buscar pets disponíveis em uma cidade
+
+```http
+  GET /pets/find/:city
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `city`      | `string` | **Obrigatório**. Cidade para fazer a busca dos pets |
+
+| Parâmetros de filtragem   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `size`      | `string` | **Opcional**. filtrar por tamanho. Ex: `MEDIUM` |
+| `ageRange`      | `string` | **Opcional**. filtrar por idade. Ex: `ADULT`|
+| `independenceLevel`      | `string` | **Opcional**. filtrar por nível de dependência. Ex: `LOW`|
+| `energy`      | `string` | **Opcional**. filtrar por nível de energia. Ex: `HIGH`|
+
++ response 200
+
+  ```json
+    {
+      "pets": [
+        {
+            "id": "115ff322-f0c1-4f17-ade5-c0cbdea48364",
+            "name": "pet-2",
+            "about": "pet very cute",
+            "age_range": "CUB",
+            "size": "GIANT",
+            "energy": "MEDIUM",
+            "independence_level": "MEDIUM",
+            "environment": "BROAD",
+            "requirements": [
+                "care",
+                "food",
+                "water"
+            ],
+            "user_id": "45b5e768-0df7-421f-999b-cc11fc8ac072",
+            "created_at": "2024-01-04T00:04:35.166Z"
+        },
+        {
+            "id": "ec3c615f-2073-41c7-8459-29a2170143bc",
+            "name": "pet-1",
+            "about": "pet very cute",
+            "age_range": "CUB",
+            "size": "SMALL",
+            "energy": "MEDIUM",
+            "independence_level": "MEDIUM",
+            "environment": "BROAD",
+            "requirements": [
+                "care",
+                "food",
+                "water"
+            ],
+            "user_id": "eda529ca-1938-48d8-ab28-9f3db17186ec",
+            "created_at": "2024-01-03T22:45:12.260Z"
+        },
+        {
+            "id": "15b98a66-d43b-49e3-b69e-dcf9bffea9e9",
+            "name": "pet-1",
+            "about": "pet very cute",
+            "age_range": "CUB",
+            "size": "MEDIUM",
+            "energy": "MEDIUM",
+            "independence_level": "MEDIUM",
+            "environment": "BROAD",
+            "requirements": [
+                "care",
+                "food",
+                "water"
+            ],
+            "user_id": "eda529ca-1938-48d8-ab28-9f3db17186ec",
+            "created_at": "2024-01-03T22:24:22.153Z"
+        }
+      ]
+    }
+  ```
+
+### Buscar detalhes de um pet
+
+```http
+  GET /pets/:id
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. ID do pet |
+
++ Response 200
+
+    ```json
+      {
+        "pet": {
+            "id": "ec3c615f-2073-41c7-8459-29a2170143bc",
+            "name": "pet-1",
+            "about": "pet very cute",
+            "age_range": "CUB",
+            "size": "SMALL",
+            "energy": "MEDIUM",
+            "independence_level": "MEDIUM",
+            "environment": "BROAD",
+            "requirements": [
+                "care",
+                "food",
+                "water"
+            ],
+            "user_id": "eda529ca-1938-48d8-ab28-9f3db17186ec",
+            "created_at": "2024-01-03T22:45:12.260Z"
+          }
+        }
+    ```
+
+
