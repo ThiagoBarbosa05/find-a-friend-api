@@ -133,7 +133,7 @@ Para rodar os testes, siga os seguintes passos:
 
 #### Autentica o usuário
 
-```http
+```
   POST /login
 ```
 
@@ -167,7 +167,7 @@ Para rodar os testes, siga os seguintes passos:
 
 #### Refresh token do usuário
 
-```http
+```
   PATCH /token/refresh
 ```
 
@@ -181,7 +181,7 @@ Para rodar os testes, siga os seguintes passos:
 
 #### Registrar um pet
 
-```http
+```
   POST /pets
 ```
 
@@ -294,7 +294,7 @@ Para rodar os testes, siga os seguintes passos:
 
 ### Buscar detalhes de um pet
 
-```http
+```
   GET /pets/:id
 ```
 
