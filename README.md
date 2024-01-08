@@ -217,7 +217,7 @@ Para rodar os testes, siga os seguintes passos:
 
 ### Buscar pets disponíveis em uma cidade
 
-```http
+```
   GET /pets/find/:city
 ```
 
