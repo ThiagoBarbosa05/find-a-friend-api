@@ -90,7 +90,7 @@ Para rodar os testes, siga os seguintes passos:
 
 ## Documentação da API
 
-#### Registra um usuário como uma ORG
+### Registra um usuário como uma ORG
 
 ```
   POST /register
@@ -131,7 +131,7 @@ Para rodar os testes, siga os seguintes passos:
           HttpOnly;
       ```
 
-#### Autentica o usuário
+### Autentica o usuário
 
 ```
   POST /login
@@ -165,7 +165,7 @@ Para rodar os testes, siga os seguintes passos:
           HttpOnly;
       ```
 
-#### Refresh token do usuário
+### Refresh token do usuário
 
 ```
   PATCH /token/refresh
@@ -179,7 +179,7 @@ Para rodar os testes, siga os seguintes passos:
     }
   ```
 
-#### Registrar um pet
+### Registrar um pet
 
 ```
   POST /pets
@@ -215,7 +215,7 @@ Para rodar os testes, siga os seguintes passos:
         Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
         ```
 
-#### Buscar pets disponíveis em uma cidade
+### Buscar pets disponíveis em uma cidade
 
 ```http
   GET /pets/find/:city
