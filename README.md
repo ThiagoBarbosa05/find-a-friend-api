@@ -92,7 +92,7 @@ Para rodar os testes, siga os seguintes passos:
 
 #### Registra um usuário como uma ORG
 
-```http
+```
   POST /register
 ```
 + Request (application/json)
